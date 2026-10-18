@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foromex Ltd | Duke Engine, automated gold trading for MetaTrader 5</title>
+<meta name="description" content="Foromex Ltd provides and operates Duke, an automated XAUUSD trading engine for MetaTrader 5. Backtested results only. Capital is at risk.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16130d;--ink2:#1d1911;--cream:#f4efe3;--paper:#fff;--gold:#c9a24b;--gold2:#e0bf72;--muted:#6f6650;--line:#e3dac3;--red:#8a2e2e;--green:#4a6b3a;
+--serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.65 var(--sans)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.1;margin:0}
+h2{font-size:clamp(30px,4vw,42px);margin-bottom:16px}
+h3{font-size:24px}
+p{margin:0 0 14px}
+.lede{max-width:62ch;color:var(--muted)}
+section{padding:80px 0}
+.dark{background:var(--ink);color:#efe8d6}
+.dark .lede{color:#b9b09a}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600}
+/* header */
+header{background:var(--ink);color:#efe8d6;position:sticky;top:0;z-index:5;border-bottom:1px solid #2c261a}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:var(--serif);font-size:24px;letter-spacing:.38em;color:var(--gold2);text-decoration:none}
+nav{display:flex;gap:22px;font-size:14px}
+nav a{text-decoration:none;color:#cfc6af}
+nav a:hover{color:var(--gold2)}
+@media(max-width:700px){nav a:not(:last-child){display:none}}
+/* hero */
+.hero{padding:96px 0 0;text-align:center}
+.hero h1{font-size:clamp(56px,11vw,112px);color:#f4efe3}
+.hero h1 em{color:var(--gold2)}
+.hero .lede{margin:22px auto 0;color:#c9c0a9;font-size:18px}
+.big{font-family:var(--serif);font-size:clamp(56px,10vw,104px);color:var(--gold2);line-height:1;margin:48px 0 6px}
+.cap{font-size:13px;color:#a89f88;letter-spacing:.06em}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:#0f0d09;margin-top:56px;border-top:1px solid #2c261a}
+.stats div{padding:26px 12px}
+.stats b{display:block;font:500 34px var(--serif);color:#f4efe3}
+.stats span{font-size:12px;color:#a89f88}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.notice{font-size:13px;color:#a89f88;max-width:70ch;margin:26px auto 0;padding-bottom:34px}
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border:1px solid var(--line);background:var(--paper);margin-top:32px}
+.kpis div{padding:22px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.kpis b{display:block;font:500 30px var(--serif)}
+.kpis span{font-size:13px;color:var(--muted)}
+.pos{color:var(--green)}.neg{color:var(--red)}
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:12px;height:240px;margin:36px 0 0;border-bottom:1px solid var(--line);padding-top:20px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:12px;color:var(--muted)}
+.bar i{display:block;width:100%;background:var(--gold)}
+.bar.part i{background:var(--gold2);opacity:.7}
+.bar small{margin-bottom:6px}
+.labels{display:flex;gap:12px;font:500 15px var(--serif);text-align:center;padding-top:6px}
+.labels span{flex:1}
+.fine{font-size:13px;color:var(--muted);max-width:80ch;margin-top:14px}
+/* tables */
+.scroll{overflow-x:auto;margin-top:28px}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+th{text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:12px 14px;border-bottom:2px solid var(--line)}
+td{padding:12px 14px;border-bottom:1px solid var(--line)}
+tr.part td{font-style:italic;color:var(--muted)}
+td.warn{color:var(--red);font-weight:600}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;background:var(--ink2);color:#efe8d6;padding:34px;margin-top:32px}
+.summary b{display:block;font:500 40px var(--serif);color:var(--gold2)}
+.summary span{font-size:13px;color:#b9b09a}
+/* strategy */
+.split{display:grid;grid-template-columns:1.6fr 1fr;gap:56px}
+.facts{border-left:1px solid #3a3223;padding-left:28px}
+.facts dt{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:18px}
+.facts dt:first-child{margin-top:0}
+.facts dd{margin:2px 0 0;font-size:17px}
+@media(max-width:800px){.split{grid-template-columns:1fr;gap:32px}.facts{border-left:0;padding-left:0}}
+/* services */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;margin-top:36px}
+.card{background:var(--paper);border-top:3px solid var(--gold);padding:28px;box-shadow:0 8px 24px rgba(40,30,10,.06)}
+.card.risk{border-top-color:var(--red)}
+.card .tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.card.risk .tag{color:var(--red)}
+.card h3{margin:8px 0 12px}
+.card p{font-size:15px;color:#4c4636}
+.card dl{margin:16px 0;font-size:14px}
+.card dl div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-top:1px solid var(--line)}
+.card dt{color:var(--muted)}.card dd{margin:0;font-weight:600;text-align:right}
+.card .note{font-size:13px;font-style:italic;color:var(--muted)}
+.card.risk .note{color:var(--red)}
+/* company + risk */
+.co{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);background:var(--paper);margin-top:28px}
+.co div{padding:20px 24px;border-bottom:1px solid var(--line)}
+.co div:nth-child(odd){border-right:1px solid var(--line)}
+.co b{display:block;font:500 22px var(--serif)}
+.co span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.co .full{grid-column:1/-1;border-right:0}
+@media(max-width:700px){.co{grid-template-columns:1fr}.co div{border-right:0!important}}
+.risk-box{border:1px solid var(--gold);background:#fbf7ea;padding:28px;margin-top:24px}
+.risk-box ul{padding-left:20px;margin:12px 0 0}
+.risk-box li{margin-bottom:8px;font-size:15px}
+footer{background:var(--ink);color:#a89f88;padding:44px 0;text-align:center;font-size:13px}
+footer .logo{display:block;margin-bottom:12px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">FOROMEX</a>
+    <nav aria-label="Main">
+      <a href="#results">Results</a>
+      <a href="#risk">Drawdown</a>
+      <a href="#strategy">Strategy</a>
+      <a href="#services">Services</a>
+      <a href="#company">Company</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="dark hero" style="padding-bottom:0">
+  <div class="wrap">
+    <p class="eyebrow">Backtested performance, 1 January to 8 August 2026</p>
+    <h1>Duke <em>Engine</em></h1>
+    <p class="lede">An automated trading strategy for XAUUSD (gold), built for MetaTrader 5. Every figure on this page comes from strategy-tester backtests, not live trading.</p>
+    <div class="big">+$622,552</div>
+    <div class="cap">Simulated net profit on a $100,000 account, one continuous run, no withdrawals</div>
+  </div>
+  <div class="stats">
+    <div><b>2.02</b><span>Profit factor</span></div>
+    <div><b>85.16%</b><span>Trade win rate</span></div>
+    <div><b>4.83%</b><span>Max balance drawdown</span></div>
+    <div><b>10,195</b><span>Total trades</span></div>
+  </div>
+  <p class="notice" style="margin-left:auto;margin-right:auto;padding:26px 24px">Backtested results are simulated. They are not a live, audited or third-party-verified record, and past or simulated performance does not predict future results. Your capital is at risk. See the <a href="#disclosure" style="color:var(--gold2)">risk disclosure</a>.</p>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <p class="eyebrow">Simulated results</p>
+    <h2>One continuous run</h2>
+    <p class="lede">From a $100,000 start, compounding with no profit withdrawn. Source: MetaTrader 5 Strategy Tester, XAUUSD, 100% real ticks, 1 January to 8 August 2026.</p>
+    <div class="kpis">
+      <div><b class="pos">$1,233,418.55</b><span>Gross profit</span></div>
+      <div><b class="neg">-$610,866.37</b><span>Gross loss</span></div>
+      <div><b>6.36</b><span>Recovery factor</span></div>
+      <div><b>6.90</b><span>Sharpe ratio</span></div>
+      <div><b>$142.07</b><span>Average winning trade</span></div>
+      <div><b>-$403.75</b><span>Average losing trade</span></div>
+    </div>
+
+    <h2 style="margin-top:72px">The monthly withdrawal model</h2>
+    <p class="lede">The run above compounds with nothing withdrawn. Most clients use Duke differently: profit is withdrawn each month and the account resets toward its starting balance. Below, each month is backtested independently on $100,000, with nothing carried over.</p>
+
+    <div class="bars" role="img" aria-label="Bar chart of monthly net profit: January $11,004, February $22,173, March $14,488, April $43,951, May $25,143, June $21,584, July $13,569, August partial $4,535">
+      <div class="bar"><small>$11,004</small><i style="height:25%"></i></div>
+      <div class="bar"><small>$22,173</small><i style="height:50%"></i></div>
+      <div class="bar"><small>$14,488</small><i style="height:33%"></i></div>
+      <div class="bar"><small>$43,951</small><i style="height:100%"></i></div>
+      <div class="bar"><small>$25,143</small><i style="height:57%"></i></div>
+      <div class="bar"><small>$21,584</small><i style="height:49%"></i></div>
+      <div class="bar"><small>$13,569</small><i style="height:31%"></i></div>
+      <div class="bar part"><small>$4,535</small><i style="height:10%"></i></div>
+    </div>
+    <div class="labels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug*</span></div>
+    <p class="fine">Bar height is each month's net profit on an independent $100,000 backtest. *August covers roughly 8 days (1 to 8 August) and is not comparable with the full months.</p>
+
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Month</th><th>Net profit</th><th>Return on $100k</th><th>Trades</th><th>Win rate</th></tr></thead>
+      <tbody>
+        <tr><td>Jan</td><td>$11,003.91</td><td>11.00%</td><td>482</td><td>85.68%</td></tr>
+        <tr><td>Feb</td><td>$22,172.91</td><td>22.17%</td><td>985</td><td>82.74%</td></tr>
+        <tr><td>Mar</td><td>$14,488.03</td><td>14.49%</td><td>902</td><td>86.03%</td></tr>
+        <tr><td>Apr</td><td>$43,951.00</td><td>43.95%</td><td>420</td><td>87.38%</td></tr>
+        <tr><td>May</td><td>$25,142.94</td><td>25.14%</td><td>331</td><td>87.01%</td></tr>
+        <tr><td>Jun</td><td>$21,584.36</td><td>21.58%</td><td>653</td><td>87.29%</td></tr>
+        <tr><td>Jul</td><td>$13,568.53</td><td>13.57%</td><td>321</td><td>90.97%</td></tr>
+        <tr class="part"><td>Aug (partial, ~8 days)</td><td>$4,534.52</td><td>4.53%</td><td>110</td><td>81.82%</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="summary">
+      <div><b>$21,702</b><span>Average full-month net profit (Jan to Jul)</span></div>
+      <div><b>21.7%</b><span>Average full-month return on $100k</span></div>
+      <div><b>$156,446</b><span>Sum of all 8 periods, withdrawn monthly</span></div>
+    </div>
+    <p class="fine">The $156,446 total and the $622,552 compounded figure come from the same strategy over the same period. The difference is whether profit stays in the account to compound or is withdrawn each month. Averages use the seven complete months. These are backtested, not live, results.</p>
+  </div>
+</section>
+
+<section id="risk" style="background:#ebe4d2">
+  <div class="wrap">
+    <p class="eyebrow">Risk and drawdown</p>
+    <h2>Monthly balance and equity drawdown</h2>
+    <p class="lede">Balance drawdown is the peak-to-trough fall based on closed trades only. Equity drawdown also counts open, unrealised positions, so it is the closer measure of what the account actually went through during the month.</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Month</th><th>Balance drawdown (max)</th><th>Equity drawdown (max)</th><th>Margin level (min)</th></tr></thead>
+      <tbody>
+        <tr><td>Jan</td><td>3.82% ($4,377.92)</td><td>7.21% ($7,755.31)</td><td>1,059.44%</td></tr>
+        <tr><td>Feb</td><td>3.09% ($3,572.36)</td><td>6.83% ($7,299.10)</td><td>1,130.71%</td></tr>
+        <tr><td>Mar</td><td>8.09% ($9,639.03)</td><td>18.85% ($20,149.99)</td><td>4,912.08%</td></tr>
+        <tr><td>Apr</td><td>32.00% ($59,604.25)</td><td>34.84% ($47,250.90)</td><td>834.43%</td></tr>
+        <tr><td>May</td><td>19.63% ($27,018.68)</td><td>14.61% ($15,358.44)</td><td class="warn">120.68%</td></tr>
+        <tr><td>Jun</td><td>6.80% ($8,170.40)</td><td>14.82% ($16,397.30)</td><td>2,686.93%</td></tr>
+        <tr><td>Jul</td><td>9.74% ($11,707.47)</td><td>29.74% ($31,354.79)</td><td>752.20%</td></tr>
+        <tr class="part"><td>Aug (partial)</td><td>3.56% ($3,809.89)</td><td>8.96% ($9,133.44)</td><td>1,947.62%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="summary" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+      <div><b>10.84%</b><span>Average monthly balance drawdown</span></div>
+      <div><b>16.98%</b><span>Average monthly equity drawdown</span></div>
+      <div><b>34.84%</b><span>Worst single-month equity drawdown (April)</span></div>
+      <div><b>120.68%</b><span>Lowest monthly margin level (May)</span></div>
+    </div>
+    <p class="fine">Margin level is the lowest point reached during the month. It shows how close the account came to a broker-forced stop-out, which typically happens around the 50 to 100% region depending on the broker. Lower is more dangerous. April had both the highest profit and the highest equity drawdown. May's 120.68% was the tightest margin of any month. Drawdown and margin level varied significantly from month to month, and there is no reason to assume future months will stay inside this historical range.</p>
+  </div>
+</section>
+
+<section id="strategy" class="dark">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">The strategy</p>
+      <h2>What Duke does</h2>
+      <p>Duke is Foromex's flagship automated trading engine, developed in-house for MetaTrader 5. It trades exclusively on XAUUSD (gold CFD), combining trend and higher-timeframe confirmation with volatility-aware entry filters and rule-based position and risk management.</p>
+      <p>The results on this site come from a strategy-tester backtest, a simulation of how the current rule set would have performed against historical tick data. They are not a live, audited or third-party-verified trading record and are shown for illustration only.</p>
+      <p><strong>Foromex describes its role as providing and operating the Duke software on behalf of account holders, for a fee.</strong> Foromex's position is that obligations relating to individual investors, including identity verification, anti-money-laundering checks and investor protections, sit with the regulated broker and the jurisdiction applicable to each client's account. This is Foromex's own description of its role and has not been independently confirmed.</p>
+    </div>
+    <dl class="facts">
+      <dt>Instrument</dt><dd>XAUUSD (gold CFD) only</dd>
+      <dt>Platform</dt><dd>MetaTrader 5</dd>
+      <dt>Test period</dt><dd>1 Jan to 8 Aug 2026</dd>
+      <dt>Data quality</dt><dd>99% real ticks</dd>
+      <dt>Most active hours</dt><dd>Roughly 15:00 to 19:00, the US and late-Europe overlap</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <p class="eyebrow">How to work with Foromex</p>
+    <h2>Services</h2>
+    <p class="lede">Three ways to have Duke traded on your behalf. Foromex does not take custody of client funds under any of them. Capital stays in the client's own account, and Foromex is paid a fee only out of realised profit, never up front. A profit-only fee does not remove your exposure to loss: your capital is at risk in every structure below.</p>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">Managed execution</span>
+        <h3>Run Duke on your own MT5 account</h3>
+        <p>Duke is deployed on an MT5 account you hold with a broker that permits algorithmic trading. Foromex is compensated only when the account produces a net profit for the month.</p>
+        <dl>
+          <div><dt>Performance fee</dt><dd>50% of net monthly profit</dd></div>
+          <div><dt>Fee if no monthly profit</dt><dd>None charged</dd></div>
+          <div><dt>Who holds the funds</dt><dd>You, at your own broker</dd></div>
+          <div><dt>Custody of funds</dt><dd>Never held by Foromex</dd></div>
+        </dl>
+        <p class="note">A profit-only fee does not offset or cap trading losses. In a month with a net loss no fee is charged, but the loss is borne in full by the account holder. Foromex never receives, holds or has withdrawal access to client capital under this arrangement.</p>
+      </article>
+      <article class="card">
+        <span class="tag">Pooled allocation</span>
+        <h3>Vantage PAMM allocation</h3>
+        <p>Foromex holds a PAMM Manager account with Vantage. Vantage separately allows its own clients to open a PAMM Investor account and connect it to Foromex's manager account, trading Duke across the pooled, connected allocations. The investment agreement, onboarding and custody of funds sit entirely between the investor and Vantage. Foromex is not a party to that agreement and does not handle investor money directly.</p>
+        <dl>
+          <div><dt>Performance fee</dt><dd>50% of realised profit</dd></div>
+          <div><dt>Profit withdrawal</dt><dd>Weekly</dd></div>
+          <div><dt>Broker / venue</dt><dd>Vantage Markets (Pty) Ltd</dd></div>
+          <div><dt>Regulator</dt><dd>FSCA (South Africa), FSP 51268</dd></div>
+          <div><dt>Agreement and custody</dt><dd>Investor and Vantage only</dd></div>
+        </dl>
+        <p class="note">Funds are held in the PAMM structure at Vantage, not by Foromex. PAMM allocation pools your capital with other investors' funds, carrying the trading risk of the strategy plus counterparty and broker risk, and is subject to Vantage's own PAMM terms.</p>
+      </article>
+      <article class="card risk">
+        <span class="tag">Elevated risk tier</span>
+        <h3>Drawdown-recovery allocation</h3>
+        <p>For clients who have taken a prior trading loss and want a strategy aimed at recovering it more aggressively than standard allocation would. This tier trades Duke at higher risk intensity and typically requires a larger capital commitment relative to the loss involved, sized individually with each client.</p>
+        <dl>
+          <div><dt>Capital required</dt><dd>Assessed per client</dd></div>
+          <div><dt>Recovery timeframe</dt><dd>Not fixed or promised</dd></div>
+          <div><dt>Performance fee</dt><dd>Agreed per client, on realised profit only</dd></div>
+        </dl>
+        <p class="note">Elevated risk cuts both ways: this tier can also lose the additional capital committed, faster than standard allocation. There is no guarantee, express or implied, that any prior loss is recovered in whole, in part, or within any timeframe. Foromex does not take custody of the client's capital.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="company" style="background:#ebe4d2">
+  <div class="wrap">
+    <p class="eyebrow">Company information</p>
+    <h2>Foromex Ltd</h2>
+    <p class="lede">Details as shown on the UK Companies House public register.</p>
+    <div class="co">
+      <div><b>FOROMEX LTD</b><span>Registered company name</span></div>
+      <div><b>16084981</b><span>Company number</span></div>
+      <div><b>Active</b><span>Company status</span></div>
+      <div><b>18 November 2024</b><span>Incorporated</span></div>
+      <div class="full"><b>20 Wenlock Road, London, England, N1 7GU</b><span>Registered office address</span></div>
+      <div class="full" style="border-bottom:0"><b style="font-size:17px">58290 Other software publishing · 62012 Business and domestic software development · 62020 IT consultancy activities · 62090 Other IT service activities</b><span>Nature of business (SIC)</span></div>
+    </div>
+    <p class="fine">Source: <a href="https://find-and-update.company-information.service.gov.uk/company/16084981" rel="noopener">UK Companies House record 16084981</a>. Companies House does not verify the accuracy of information filed by companies. Foromex Ltd was previously registered as FXRTC IT Solutions Ltd until 13 January 2026.</p>
+  </div>
+</section>
+
+<section id="disclosure">
+  <div class="wrap">
+    <p class="eyebrow">Important information</p>
+    <h2>Risk disclosure</h2>
+    <div class="risk-box">
+      <p><strong>Trading leveraged products such as gold CFDs carries a high level of risk and you can lose some or all of your capital.</strong> It may not be suitable for everyone.</p>
+      <ul>
+        <li>All performance figures on this website are backtested and simulated using MetaTrader 5 historical data. They are not live, audited or independently verified results.</li>
+        <li>Backtests have inherent limitations. They do not account for every real-world factor, such as slippage, spread changes, requotes, execution delays and liquidity, and results with real money can differ materially.</li>
+        <li>Past and simulated performance is not a reliable indicator of future results. Nothing here is a promise or guarantee of profit or of any return.</li>
+        <li>Drawdowns and margin levels shown vary widely by month, and future losses may exceed those in the backtest, including a forced stop-out of the account.</li>
+        <li>Fees are charged only on realised profit, but this does not limit or offset trading losses, which are borne by the account holder.</li>
+        <li>Foromex Ltd does not hold client funds. Brokers and PAMM providers are separate third parties with their own terms, regulation and risks.</li>
+        <li>This website is for information only. It is not investment advice or a personal recommendation. Consider seeking independent financial advice and make sure you understand the risks before trading.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">FOROMEX</span>
+    <div>Foromex Ltd · Company no. 16084981 · Registered in England and Wales</div>
+    <div>20 Wenlock Road, London, England, N1 7GU</div>
+    <div style="margin-top:10px">Algorithmic trading systems for MetaTrader 5. Figures are backtested and simulated.</div>
+    <div>© 2026 Foromex Ltd</div>
+  </div>
+</footer>
+</body>
+</html>
