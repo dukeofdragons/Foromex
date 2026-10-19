@@ -128,6 +128,17 @@ form.cf{background:var(--paper);border:1px solid var(--line);padding:28px}
 .cf .msg{margin-top:16px;font-size:15px}
 .cf .msg.ok{color:var(--green)}.cf .msg.err{color:var(--red)}
 .cf .small{font-size:13px;color:var(--muted);margin:0 0 16px}
+.facts4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border:1px solid var(--line);background:var(--paper);margin-top:36px}
+.facts4 div{padding:24px;border-right:1px solid var(--line)}
+.facts4 b{display:block;font:500 38px var(--serif)}
+.facts4 span{font-size:13px;color:var(--muted)}
+.prose{max-width:68ch}
+.views{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin-top:34px}
+.view{background:var(--paper);border-top:3px solid var(--gold);padding:26px}
+.view h3{font-size:23px;margin-bottom:8px}
+.view p{font-size:15px;color:#4c4636;margin:0}
+.btn{display:inline-block;background:var(--gold);color:var(--ink);padding:14px 28px;text-decoration:none;font-weight:600;margin-top:10px}
+.btn:hover{background:var(--gold2)}
 </style>
 </head>
 <body>
@@ -136,6 +147,7 @@ form.cf{background:var(--paper);border:1px solid var(--line);padding:28px}
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Foromex home"><img src="logo.png" alt="Foromex" width="120" height="58"></a>
     <nav aria-label="Main">
+      <a href="#about">About</a>
       <a href="#results">Results</a>
       <a href="#risk">Drawdown</a>
       <a href="#strategy">Strategy</a>
@@ -147,6 +159,51 @@ form.cf{background:var(--paper);border:1px solid var(--line);padding:28px}
 </header>
 
 <main id="top">
+<section id="about">
+  <div class="wrap">
+    <p class="eyebrow">About Foromex</p>
+    <h2>Why Foromex exists</h2>
+    <div class="prose">
+      <p>Foromex was founded in 2024 with a clear purpose: to help struggling traders move away from emotional and revenge trading, and towards steadier, slower, algorithm-based trading. Many traders do not lose because they lack a strategy. They lose because fear, greed and the urge to win a loss back override it. An automated system follows its rules every time, whatever the last trade did.</p>
+      <p>Since then we have built a range of tools for MetaTrader 4 and MetaTrader 5 that support traders in their day-to-day activity. Our flagship product is the <strong>Duke Engine</strong>, an automated trading engine for XAUUSD (gold), which was released to the public in late 2025.</p>
+      <p>Our team is made up of traders and algorithm developers who have worked exclusively on the XAU/USD pair for more than 20 years. That narrow focus is deliberate. We would rather understand one market deeply than trade many of them thinly.</p>
+    </div>
+    <div class="facts4">
+      <div><b>2024</b><span>Year Foromex was founded</span></div>
+      <div><b>Late 2025</b><span>Duke Engine released to the public</span></div>
+      <div><b>25+</b><span>Investors who have used Duke while recovering earlier losses (company-reported)</span></div>
+      <div style="border-right:0"><b>20+ years</b><span>Team experience on XAU/USD</span></div>
+    </div>
+    <p class="fine">The investor figure is Foromex's own statement and has not been independently verified. Individual results vary, and nothing on this site is a promise of profit.</p>
+  </div>
+</section>
+<section style="background:#ebe4d2">
+  <div class="wrap">
+    <p class="eyebrow">Our view</p>
+    <h2>Expert perspective on algorithm development and indicators</h2>
+    <p class="lede">After more than two decades working on gold, these are the principles our developers apply when they build and judge automated systems.</p>
+    <div class="views">
+      <div class="view"><h3>Indicators describe the past</h3><p>Moving averages, RSI, MACD and similar tools are calculated from price that has already happened. They are useful for describing conditions such as trend, momentum and volatility, but none of them predicts what comes next. Treat them as inputs to a decision, never as a forecast.</p></div>
+      <div class="view"><h3>Context beats a single signal</h3><p>One indicator crossing a line is weak evidence. Better systems combine several kinds of information, such as the higher-timeframe trend, current volatility and time of day, and only act when they agree. Fewer, better-confirmed trades usually serve a trader better than constant activity.</p></div>
+      <div class="view"><h3>Risk management matters more than entries</h3><p>Two systems with the same entry rules can have very different outcomes depending on position sizing, stop logic and how exposure is limited. How a strategy behaves when it is wrong is more important than how it behaves when it is right.</p></div>
+      <div class="view"><h3>Be wary of a perfect backtest</h3><p>It is easy to tune a system until it fits past data, which is called over-fitting, and then watch it fail live. Test on data the system was not tuned on, check across different market conditions, use high-quality tick data, and allow for spread, slippage and execution delays.</p></div>
+      <div class="view"><h3>Win rate is not edge</h3><p>A high win rate can hide a few large losses. Judge a system by profit factor, drawdown, margin level and the size of its worst periods together. Any single headline number can mislead.</p></div>
+      <div class="view"><h3>Markets change, so monitor</h3><p>Gold behaves differently in quiet and volatile regimes. An automated system still needs oversight: reviewing performance regularly, understanding why results change, and being willing to adjust or pause it when conditions no longer suit its design.</p></div>
+    </div>
+    <p class="fine">This is general educational commentary from Foromex, not investment advice or a recommendation. No algorithm, indicator or backtest can guarantee future results, and trading leveraged products such as gold CFDs can lose you some or all of your capital.</p>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Duke in practice</p>
+    <h2>Built for consistency, not excitement</h2>
+    <div class="prose">
+      <p>Duke is designed for people who want a regular, rule-driven approach rather than constant screen time. Foromex reports that more than 25 investors have used Duke while working to recover earlier trading losses, and that many now run it with a steady monthly withdrawal routine.</p>
+      <p>Outcomes differ from account to account and month to month, and every trading account carries the risk of loss. You can see the full backtested figures, including drawdowns, on the <a href="#results">results page</a>.</p>
+    </div>
+  </div>
+</section>
+
 <section class="dark hero" style="padding-bottom:0">
   <div class="wrap">
     <img class="herologo" src="logo.png" alt="Foromex" width="240" height="115">
