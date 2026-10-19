@@ -29,6 +29,8 @@ section{padding:80px 0}
 /* header */
 header{background:var(--ink);color:#efe8d6;position:sticky;top:0;z-index:5;border-bottom:1px solid #2c261a}
 header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.herologo{display:block;margin:0 auto 36px;max-width:60%;height:auto}
+.logo img{display:block;height:48px;width:auto}
 .logo{font-family:var(--serif);font-size:24px;letter-spacing:.38em;color:var(--gold2);text-decoration:none}
 nav{display:flex;gap:22px;font-size:14px}
 nav a{text-decoration:none;color:#cfc6af}
@@ -106,19 +108,40 @@ td.warn{color:var(--red);font-weight:600}
 footer{background:var(--ink);color:#a89f88;padding:44px 0;text-align:center;font-size:13px}
 footer .logo{display:block;margin-bottom:12px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;margin-top:28px}
+@media(max-width:800px){.contact{grid-template-columns:1fr;gap:32px}}
+.contact dt{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:20px}
+.contact dt:first-child{margin-top:0}
+.contact dd{margin:2px 0 0;font:500 22px var(--serif)}
+.contact .sub{display:block;font:400 16px/1.8 var(--sans);margin-top:4px}
+.contact .sub a{text-decoration:none;border-bottom:1px solid var(--line)}
+form.cf{background:var(--paper);border:1px solid var(--line);padding:28px}
+.cf label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.cf input,.cf textarea{width:100%;font:inherit;padding:12px 14px;border:1px solid #cfc5ab;background:#fffdf7;color:var(--ink);border-radius:2px;margin-bottom:18px}
+.cf textarea{min-height:150px;resize:vertical}
+.cf button{font:600 15px var(--sans);background:var(--ink);color:var(--gold2);border:0;padding:14px 28px;cursor:pointer}
+.cf button:hover{background:#2a2417}
+.cf button:disabled{opacity:.6;cursor:wait}
+.cf .hp{position:absolute;left:-9999px}
+.cf .msg{margin-top:16px;font-size:15px}
+.cf .msg.ok{color:var(--green)}.cf .msg.err{color:var(--red)}
+.cf .small{font-size:13px;color:var(--muted);margin:0 0 16px}
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap">
-    <a class="logo" href="#top">FOROMEX</a>
+    <a class="logo" href="#top" aria-label="Foromex home"><img src="logo.png" alt="Foromex" width="120" height="58"></a>
     <nav aria-label="Main">
       <a href="#results">Results</a>
       <a href="#risk">Drawdown</a>
       <a href="#strategy">Strategy</a>
       <a href="#services">Services</a>
       <a href="#company">Company</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
@@ -126,6 +149,7 @@ footer .logo{display:block;margin-bottom:12px}
 <main id="top">
 <section class="dark hero" style="padding-bottom:0">
   <div class="wrap">
+    <img class="herologo" src="logo.png" alt="Foromex" width="240" height="115">
     <p class="eyebrow">Backtested performance, 1 January to 8 August 2026</p>
     <h1>Duke <em>Engine</em></h1>
     <p class="lede">An automated trading strategy for XAUUSD (gold), built for MetaTrader 5. Every figure on this page comes from strategy-tester backtests, not live trading.</p>
@@ -308,6 +332,44 @@ footer .logo{display:block;margin-bottom:12px}
   </div>
 </section>
 
+<section id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Contact us</p>
+    <h2>Get in touch</h2>
+    <p class="lede">Questions about Duke or the services? Send us a message and we will reply by email.</p>
+    <div class="contact">
+      <dl>
+        <dt>Email</dt><dd><a href="mailto:support@foromex.com">support@foromex.com</a></dd>
+        <dt>Contacts</dt><dd>Abdul Muneeb
+          <span class="sub"><em style="color:var(--muted)">Chief Executive Officer</em><br>
+          <a href="mailto:am@foromex.com">am@foromex.com</a></span></dd>
+        <dd style="margin-top:18px">Omar Mukthar Haneefa
+          <span class="sub"><em style="color:var(--muted)">Marketing Manager</em><br>
+          <a href="mailto:omar@foromex.com">omar@foromex.com</a></span></dd>
+        <dd style="margin-top:18px">Latheef Kalid
+          <span class="sub"><em style="color:var(--muted)">Public Relations Officer (MENA)</em><br>
+          <a href="mailto:latheef@foromex.com">latheef@foromex.com</a></span></dd>
+        <dt>Registered office</dt><dd>20 Wenlock Road, London, England, N1 7GU</dd>
+        <dt>Company</dt><dd>Foromex Ltd, company no. 16084981</dd>
+      </dl>
+      <form class="cf" id="cf" novalidate>
+        <label for="cf-name">Your name</label>
+        <input id="cf-name" name="name" type="text" autocomplete="name" required>
+        <label for="cf-email">Your email</label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" required>
+        <label for="cf-subject">Subject</label>
+        <input id="cf-subject" name="subject" type="text" required>
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" required></textarea>
+        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="small">Please do not send passwords, account logins or card details by this form. Nothing here is investment advice.</p>
+        <button type="submit" id="cf-btn">Send message</button>
+        <div class="msg" id="cf-msg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section id="disclosure">
   <div class="wrap">
     <p class="eyebrow">Important information</p>
@@ -330,12 +392,39 @@ footer .logo{display:block;margin-bottom:12px}
 
 <footer>
   <div class="wrap">
-    <span class="logo">FOROMEX</span>
+    <img src="logo.png" alt="Foromex" width="150" height="72" style="margin-bottom:14px">
     <div>Foromex Ltd · Company no. 16084981 · Registered in England and Wales</div>
     <div>20 Wenlock Road, London, England, N1 7GU</div>
     <div style="margin-top:10px">Algorithmic trading systems for MetaTrader 5. Figures are backtested and simulated.</div>
     <div>© 2026 Foromex Ltd</div>
   </div>
 </footer>
+<script>
+(function(){
+  // To send straight to support@foromex.com without opening an email app, create a free form at formspree.io
+  // with that address and paste its URL here, e.g. "https://formspree.io/f/abcdwxyz". Leave empty to use mailto.
+  var ENDPOINT="";
+  var TO="support@foromex.com";
+  var f=document.getElementById("cf"),btn=document.getElementById("cf-btn"),msg=document.getElementById("cf-msg");
+  function say(t,c){msg.textContent=t;msg.className="msg "+c}
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    if(!f.checkValidity()){f.reportValidity();return}
+    if(f.elements._gotcha.value){return}
+    var d=new FormData(f);
+    if(ENDPOINT){
+      btn.disabled=true;say("Sending...","");
+      fetch(ENDPOINT,{method:"POST",body:d,headers:{Accept:"application/json"}})
+        .then(function(r){if(!r.ok)throw 0;f.reset();say("Thank you. Your message has been sent and we will reply by email.","ok")})
+        .catch(function(){say("Sorry, your message could not be sent. Please email "+TO+" directly.","err")})
+        .then(function(){btn.disabled=false});
+    }else{
+      var body="Name: "+d.get("name")+"\nEmail: "+d.get("email")+"\n\n"+d.get("message");
+      window.location.href="mailto:"+TO+"?subject="+encodeURIComponent(d.get("subject"))+"&body="+encodeURIComponent(body);
+      say("Your email app should open with the message ready to send. If it does not, write to "+TO+".","ok");
+    }
+  });
+})();
+</script>
 </body>
 </html>
